@@ -1,5 +1,5 @@
 
-const UNICODE_MIN = 33;
+const UNICODE_MIN = 32;
 const UNICODE_MAX = 126;
 
 // From char code to number:
@@ -51,6 +51,9 @@ readline.question('Encrypt or Decrypt? (E/D)?:', option => {
             })
         } else {
             // encrypt
+            console.log("-------------------------------------------------------------------------")
+            console.log("Warning! This program cannot encrypt strings including the $ character <-")
+            console.log("-------------------------------------------------------------------------")
             console.log("Encrypted Line:")
             console.log( encrypt( characterMap, process.argv[2] ))
         }
@@ -65,7 +68,7 @@ function decrypt(map,line){
         let val = char.charCodeAt(0);
         let subtractor = map[ index % map.length ];
         let decryptedVal = val - subtractor;
-        if( decryptedVal < UNICODE_MIN ){
+        while( decryptedVal < UNICODE_MIN ){
             decryptedVal = UNICODE_MAX - ( UNICODE_MIN - decryptedVal );
         }
         decryptedLine += String.fromCharCode( decryptedVal );
@@ -79,7 +82,7 @@ function encrypt(map,line){
         let val = char.charCodeAt(0);
         let adder = map[ index % map.length ];
         let encryptedVal = val + adder;
-        if( encryptedVal > UNICODE_MAX ){
+        while( encryptedVal > UNICODE_MAX ){
             encryptedVal = UNICODE_MIN + ( encryptedVal - UNICODE_MAX );
         }
         encryptedLine += String.fromCharCode( encryptedVal );
